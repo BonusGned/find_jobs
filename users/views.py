@@ -1,5 +1,5 @@
 from django.contrib.auth import logout
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from rest_framework import viewsets
 from rest_framework.mixins import UpdateModelMixin, ListModelMixin
 from rest_framework.viewsets import GenericViewSet
