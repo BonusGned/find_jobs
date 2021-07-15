@@ -9,7 +9,7 @@ class VacancyListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class VacancyDetailSerializer(serializers.ModelSerializer):
+class VacancyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
         fields = '__all__'

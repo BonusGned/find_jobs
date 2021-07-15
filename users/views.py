@@ -1,27 +1,25 @@
 from rest_framework import viewsets
-from rest_framework.generics import ListAPIView
-from rest_framework.mixins import UpdateModelMixin, ListModelMixin, RetrieveModelMixin
+from rest_framework.mixins import UpdateModelMixin, ListModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from users.models import Resume, UserVacancyRelation
 from users.permissions import IsOwnerOrReadOnly
-from users.serializers import ResumeDetailSerializer, ResumeListSerializer, UserVacancySerializer
+from users.serializers import UserVacancySerializer, ResumeSerializer, ResumeCreateSerializer
 from vacancies.models import Vacancy
 from vacancies.serializers import VacancyListSerializer
 
 
 class ResumeViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = ResumeSerializer
 
     def get_queryset(self):
         queryset = Resume.objects.filter(user=self.request.user)
         return queryset
 
     def get_serializer_class(self):
-        if self.action == 'list':
-            return ResumeListSerializer
-        elif self.action == 'retrieve':
-            return ResumeDetailSerializer
+        if self.action == 'create':
+            return ResumeCreateSerializer
+        return ResumeSerializer
 
     def perform_create(self, serializer):
         serializer.validated_data['user'] = self.request.user

@@ -3,16 +3,16 @@ from rest_framework import serializers
 from users.models import Resume, UserVacancyRelation
 
 
-class ResumeListSerializer(serializers.ModelSerializer):
+class ResumeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resume
         fields = '__all__'
 
 
-class ResumeDetailSerializer(serializers.ModelSerializer):
+class ResumeCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resume
-        fields = '__all__'
+        fields = ('title', 'description')
 
 
 class UserVacancySerializer(serializers.ModelSerializer):
