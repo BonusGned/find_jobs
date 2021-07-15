@@ -6,7 +6,7 @@ from vacancies.models import Vacancy
 class VacancyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
-        fields = ('id', 'title', 'description')
+        fields = '__all__'
 
 
 class VacancyDetailSerializer(serializers.ModelSerializer):

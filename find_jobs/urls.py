@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from users.urls import router
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
     path('auth/', include('djoser.social.urls')),
     path('vacancies/', include('vacancies.urls')),
-    path('', include('users.urls'))
+    path('', include((router.urls, 'users.urls'), namespace='users'))
 ]

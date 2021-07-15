@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from users.admin import UserVacancyRelationInline
 from vacancies.models import Vacancy, Skill
 
 
@@ -9,4 +10,4 @@ class SkillInline(admin.TabularInline):
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
-    inlines = (SkillInline,)
+    inlines = (SkillInline, UserVacancyRelationInline)

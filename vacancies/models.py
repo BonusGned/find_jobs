@@ -1,8 +1,6 @@
 from django.db import models
 from multiselectfield import MultiSelectField
 
-from users.models import User
-
 
 class Vacancy(models.Model):
     ENTRY = 'Без опыта'
@@ -24,11 +22,15 @@ class Vacancy(models.Model):
     title = models.CharField('Заголовок', max_length=50)
     description = models.TextField('Описание', max_length=5000)
     price = models.PositiveIntegerField('Зарплата', blank=True, null=True)
+    location = models.CharField('Страна/Город', max_length=200, blank=True, null=True)
+    address = models.CharField('Адрес', max_length=200, blank=True, null=True)
     work_experience = models.CharField('Опыт работы', choices=WORK_EXPERIENCE_CHOICES, max_length=20)
     type_job = MultiSelectField('Формат работы', choices=TYPE_JOB)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    employer = models.ForeignKey(User, related_name='vacancies', on_delete=models.CASCADE, verbose_name='Работадатель')
+    created = models.DateTimeField('Дата публикации', auto_now_add=True)
+    updated = models.DateTimeField('Дата обновления', auto_now=True)
+    employer = models.ForeignKey('users.User', related_name='vacancies', on_delete=models.CASCADE,
+                                 verbose_name='Работодатель')
+    responding = models.ManyToManyField('users.User', through='users.UserVacancyRelation', related_name='my_vacancies')
 
     def __str__(self):
         return self.title

@@ -52,7 +52,7 @@ class UserVacancyRelation(models.Model):
     in_response = models.BooleanField('Отклик', default=False)
 
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}: {self.vacancy.name}, Заклдаки: {self.in_bookmarks}, ' \
+        return f'{self.user.first_name} {self.user.last_name}: {self.vacancy.title}, Заклдаки: {self.in_bookmarks}, ' \
                f'Отклик: {self.in_response}'
 
     class Meta:
