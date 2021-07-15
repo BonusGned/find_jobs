@@ -1,3 +1,5 @@
+from django.contrib.auth import logout
+from django.shortcuts import redirect, render
 from rest_framework import viewsets
 from rest_framework.mixins import UpdateModelMixin, ListModelMixin
 from rest_framework.viewsets import GenericViewSet
@@ -10,6 +12,7 @@ from vacancies.serializers import VacancyListSerializer
 
 
 class ResumeViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ResumeSerializer
 
     def get_queryset(self):
@@ -27,6 +30,7 @@ class ResumeViewSet(viewsets.ModelViewSet):
 
 
 class UserBookmarkVacancyView(UpdateModelMixin, GenericViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
     serializer_class = UserVacancySerializer
     lookup_field = 'vacancy'
 
@@ -49,3 +53,8 @@ class ResponsesListView(ListModelMixin, GenericViewSet):
 
     def get_queryset(self):
         return UserVacancyRelation.objects.filter(user=self.request.user, in_response=True).vacancy.all()
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('/')

@@ -8,8 +8,8 @@ from vacancies.serializers import VacancyListSerializer, VacancyCreateSerializer
 
 
 class VacancyViewSet(viewsets.ModelViewSet):
-    permission_classes = IsEmployerOrReadOnly
     queryset = Vacancy.objects.all()
+    permission_classes = [IsEmployerOrReadOnly]
     filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_fields = ['price', 'location', 'type_job']
     search_fields = ['title', 'description']

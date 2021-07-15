@@ -27,9 +27,9 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -52,9 +52,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -143,12 +144,18 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'vacancies.permissions.IsEmployerOrReadOnly',
+        'users.permissions.IsOwnerOrReadOnly',
+    )
 }
 
 DJOSER = {
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': False,
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000/google', 'http://localhost:8000/facebook']
 }
 
 SIMPLE_JWT = {
@@ -201,12 +208,19 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 # AUTH WITH INSTAGRAM
 SOCIAL_AUTH_INSTAGRAM_KEY = os.getenv('SOCIAL_AUTH_INSTAGRAM_KEY')
 SOCIAL_AUTH_INSTAGRAM_SECRET = os.getenv('SOCIAL_AUTH_INSTAGRAM_SECRET')
-SOCIAL_AUTH_INSTAGRAM_EXTRA_DATA = [('user', 'user'), ]
+SOCIAL_AUTH_INSTAGRAM_EXTRA_DATA = [('user', 'user')]
 
 # LOGIN URLS
 LOGIN_URL = 'auth/login'
-LOGIN_REDIRECT_URL = '/profile'
+LOGIN_REDIRECT_URL = '/home'
 LOGOUT_URL = 'auth/logout'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'users.User'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
