@@ -1,4 +1,3 @@
-import uuid as uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
@@ -8,7 +7,6 @@ from vacancies.models import Vacancy
 
 
 class User(AbstractUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
     email = models.EmailField('Email адрес', unique=True)
     first_name = models.CharField('Имя', max_length=20)
@@ -31,7 +29,6 @@ class User(AbstractUser):
 
 
 class Resume(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, related_name='resumes', on_delete=models.CASCADE, verbose_name='Соискатель')
     title = models.CharField('Заголовок', max_length=124)
     description = models.TextField('Информация о пользователе', max_length=5000)
